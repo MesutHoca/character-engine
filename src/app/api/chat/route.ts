@@ -1,7 +1,17 @@
+/**
+ * Chat API Route
+ * --------------
+ * Handles POST requests to generate character responses using the CharacterEngine and Anthropic Claude API.
+ * Expects character traits, name, archetype, user message, and conversation history in the request body.
+ * Returns the AI-generated character response and metadata.
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { CharacterEngine } from '../../../lib/ai-providers';
 import { CharacterTraits } from '../../../types/character';
 
+/**
+ * Shape of the chat request body expected by this endpoint.
+ */
 interface ChatRequest {
   traits: CharacterTraits;
   name: string;
@@ -13,9 +23,15 @@ interface ChatRequest {
   }>;
 }
 
+/**
+ * POST handler for the chat API endpoint.
+ * Generates a character response using the CharacterEngine and returns it as JSON.
+ * @param request - The Next.js request object.
+ * @returns JSON response with the character's message and metadata, or an error.
+ */
 export async function POST(request: NextRequest) {
   try {
-    // Debug: Log environment variable status
+    // Debug: Log environment variable status (for troubleshooting API key issues)
     console.log('Environment variables check:', {
       hasKey: !!process.env.ANTHROPIC_API_KEY,
       keyLength: process.env.ANTHROPIC_API_KEY?.length,
@@ -23,7 +39,7 @@ export async function POST(request: NextRequest) {
       allEnvKeys: Object.keys(process.env).filter(key => key.includes('ANTHROPIC') || key.includes('API'))
     });
 
-    // Parse the request body
+    // Parse the request body as ChatRequest
     const body: ChatRequest = await request.json();
     
     // Validate required fields
@@ -43,21 +59,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate character prompt
+    // Generate character prompt from traits, name, and archetype
     const characterPrompt = CharacterEngine.generateCharacterPrompt(
       body.traits,
       body.name,
       body.archetype
     );
 
-    // Generate character response
+    // Generate character response using the AI provider
     const characterResponse = await CharacterEngine.generateCharacterResponse(
       characterPrompt,
       body.userMessage,
       body.conversationHistory || []
     );
 
-    // Return the character's response
+    // Return the character's response and metadata
     return NextResponse.json({
       message: characterResponse,
       characterName: body.name,
@@ -68,7 +84,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Chat API error:', error);
     
-    // Handle specific error types
+    // Handle specific error types for user-friendly responses
     if (error instanceof Error) {
       if (error.message.includes('api_key') || error.message.includes('ANTHROPIC_API_KEY')) {
         return NextResponse.json(

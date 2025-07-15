@@ -1,15 +1,35 @@
+/**
+ * AI Providers & Character Engine
+ * ------------------------------
+ * This module provides the CharacterEngine class, which generates system prompts and character responses
+ * using AI (Anthropic Claude) based on Big Five personality traits. It also validates configuration and
+ * adapts speech/decision-making styles for narrative realism.
+ *
+ * Used by API routes and UI components to simulate character dialogue and behavior.
+ */
 import Anthropic from '@anthropic-ai/sdk';
 import { CharacterTraits } from '../types/character';
 import { generateTraitDescriptions, predictBehaviorPatterns } from './trait-processor';
 
+/**
+ * Represents a single message in a conversation (user or assistant).
+ */
 interface ConversationMessage {
   role: 'user' | 'assistant';
   content: string;
 }
 
+/**
+ * CharacterEngine generates prompts and responses for AI-driven character simulation.
+ * Uses Anthropic Claude API for natural language generation.
+ */
 export class CharacterEngine {
   private static anthropic: Anthropic | null = null;
 
+  /**
+   * Returns a singleton Anthropic client, initializing it if needed.
+   * @throws Error if the API key is missing.
+   */
   private static getAnthropicClient(): Anthropic {
     if (!this.anthropic) {
       const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -22,7 +42,11 @@ export class CharacterEngine {
   }
 
   /**
-   * Generates a detailed system prompt that makes AI behave as a specific character
+   * Generates a detailed system prompt that makes AI behave as a specific character.
+   * @param traits - The character's Big Five trait values.
+   * @param name - The character's name.
+   * @param archetype - The character's archetype (e.g., Hero, Villain).
+   * @returns A string prompt for the AI.
    */
   static generateCharacterPrompt(
     traits: CharacterTraits,
@@ -48,7 +72,7 @@ export class CharacterEngine {
       speechStyle = 'You adapt your communication style to the situation and audience.';
     }
 
-    // Determine decision-making style
+    // Determine decision-making style based on traits
     let decisionStyle = '';
     if (traits.openness > 70 && traits.agreeableness < 40) {
       decisionStyle = 'You make creative decisions that often prioritize your own interests and goals.';
@@ -62,6 +86,7 @@ export class CharacterEngine {
       decisionStyle = 'You make balanced decisions considering both practical and interpersonal factors.';
     }
 
+    // Compose the system prompt for the AI
     const prompt = `You are ${name}, a character with the archetype of "${archetype}". 
 
 PERSONALITY TRAITS:
@@ -92,7 +117,12 @@ Remember: You ARE ${name}. Think, speak, and act as this character would.`;
   }
 
   /**
-   * Generates character responses using Claude API
+   * Generates character responses using Claude API.
+   * @param characterPrompt - The system prompt for the character.
+   * @param userMessage - The latest user message.
+   * @param conversationHistory - Array of previous conversation messages.
+   * @returns The AI-generated character response as a string.
+   * @throws Error if the API key is missing, rate-limited, or quota exceeded.
    */
   static async generateCharacterResponse(
     characterPrompt: string,
@@ -102,7 +132,7 @@ Remember: You ARE ${name}. Think, speak, and act as this character would.`;
     try {
       const anthropic = this.getAnthropicClient();
       
-      // Prepare conversation messages
+      // Prepare conversation messages for the API
       const messages: Anthropic.Messages.MessageParam[] = [
         {
           role: 'user',
@@ -128,6 +158,7 @@ Remember: You ARE ${name}. Think, speak, and act as this character would.`;
         content: userMessage
       });
 
+      // Call the Claude API
       const response = await anthropic.messages.create({
         model: 'claude-3-5-sonnet-20241022',
         max_tokens: 1000,
@@ -135,10 +166,12 @@ Remember: You ARE ${name}. Think, speak, and act as this character would.`;
         temperature: 0.8, // Add some creativity while maintaining consistency
       });
 
+      // Return the AI's response text
       return response.content[0].type === 'text' ? response.content[0].text : 'I apologize, but I cannot respond at the moment.';
     } catch (error) {
       console.error('Error generating character response:', error);
       
+      // Handle specific error types for better UX
       if (error instanceof Error) {
         if (error.message.includes('api_key') || error.message.includes('ANTHROPIC_API_KEY')) {
           throw new Error('Anthropic API key not configured. Please check your .env file.');
@@ -154,7 +187,8 @@ Remember: You ARE ${name}. Think, speak, and act as this character would.`;
   }
 
   /**
-   * Validates that the API key is configured
+   * Validates that the Anthropic API key is configured and not a placeholder.
+   * @returns True if the API key is valid, false otherwise.
    */
   static validateConfiguration(): boolean {
     const apiKey = process.env.ANTHROPIC_API_KEY;

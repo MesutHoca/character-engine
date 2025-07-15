@@ -1,9 +1,19 @@
+/**
+ * CharacterTester Component
+ * ------------------------
+ * Provides an interactive chat interface for testing AI-driven character responses.
+ * Displays character info, trait descriptions, and a chat UI for user-character conversation.
+ * Used for prototyping and exploring character personalities in real time.
+ */
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
 import { CharacterTraits } from '../../types/character';
 import { generateTraitDescriptions } from '../../lib/trait-processor';
 
+/**
+ * Represents a single chat message (user or character).
+ */
 interface Message {
   id: string;
   role: 'user' | 'character';
@@ -11,17 +21,30 @@ interface Message {
   timestamp: Date;
 }
 
+/**
+ * Props for the CharacterTester component.
+ * @property traits - The character's Big Five trait values.
+ * @property name - The character's display name.
+ * @property archetype - The character's archetype (e.g., Hero, Villain).
+ */
 interface CharacterTesterProps {
   traits: CharacterTraits;
   name: string;
   archetype: string;
 }
 
+/**
+ * CharacterTester provides a chat UI for interacting with an AI-driven character.
+ * @param traits - The character's Big Five trait values.
+ * @param name - The character's display name.
+ * @param archetype - The character's archetype.
+ */
 export const CharacterTester: React.FC<CharacterTesterProps> = ({
   traits,
   name,
   archetype,
 }) => {
+  // State for chat messages, input, loading, and error
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +57,9 @@ export const CharacterTester: React.FC<CharacterTesterProps> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  /**
+   * Sends the user's message to the API and appends the character's response.
+   */
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
 
@@ -90,6 +116,9 @@ export const CharacterTester: React.FC<CharacterTesterProps> = ({
     }
   };
 
+  /**
+   * Handles Enter key press to send message.
+   */
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -97,6 +126,9 @@ export const CharacterTester: React.FC<CharacterTesterProps> = ({
     }
   };
 
+  /**
+   * Formats a Date object as a time string (HH:MM AM/PM).
+   */
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };

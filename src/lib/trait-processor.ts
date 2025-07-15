@@ -1,13 +1,22 @@
+/**
+ * Trait Processor Utilities
+ * ------------------------
+ * Provides functions to generate personality trait descriptions, predict behavior patterns,
+ * and identify sources of conflict between characters based on Big Five traits.
+ * Used throughout the character engine for psychological realism and narrative depth.
+ */
 import { CharacterTraits } from '../types/character';
 
 /**
  * Converts numerical Big Five personality traits into detailed, psychologically accurate descriptions.
  * Includes behavioral manifestations and speech patterns for each trait level.
+ * @param traits - The Big Five trait values for a character.
+ * @returns An object mapping each trait to a descriptive string.
  */
 export function generateTraitDescriptions(traits: CharacterTraits): Record<string, string> {
   const descriptions: Record<string, string> = {};
 
-  // Openness
+  // Openness: creativity, curiosity, and willingness to try new things
   if (traits.openness <= 30) {
     descriptions.openness = `Low Openness: Prefers tradition and routine, values practicality over imagination. Speech is concrete, avoids abstract topics, and tends to resist change.`;
   } else if (traits.openness <= 70) {
@@ -16,7 +25,7 @@ export function generateTraitDescriptions(traits: CharacterTraits): Record<strin
     descriptions.openness = `High Openness: Highly imaginative, creative, and curious. Seeks novelty and variety, enjoys abstract thinking and unconventional ideas. Speech is expressive, metaphorical, and often explores possibilities.`;
   }
 
-  // Conscientiousness
+  // Conscientiousness: organization, dependability, and discipline
   if (traits.conscientiousness <= 30) {
     descriptions.conscientiousness = `Low Conscientiousness: Spontaneous, sometimes careless, and may struggle with organization. Speech is informal, may forget details, and can be impulsive.`;
   } else if (traits.conscientiousness <= 70) {
@@ -25,7 +34,7 @@ export function generateTraitDescriptions(traits: CharacterTraits): Record<strin
     descriptions.conscientiousness = `High Conscientiousness: Highly organized, disciplined, and goal-oriented. Plans ahead, values precision, and is very dependable. Speech is structured, detail-oriented, and careful.`;
   }
 
-  // Extraversion
+  // Extraversion: sociability, assertiveness, and outgoingness
   if (traits.extraversion <= 30) {
     descriptions.extraversion = `Low Extraversion: Reserved, introspective, and prefers solitude or small groups. Speech is quiet, thoughtful, and may avoid drawing attention.`;
   } else if (traits.extraversion <= 70) {
@@ -34,7 +43,7 @@ export function generateTraitDescriptions(traits: CharacterTraits): Record<strin
     descriptions.extraversion = `High Extraversion: Outgoing, energetic, and thrives in social situations. Speech is lively, expressive, and often seeks to engage others.`;
   }
 
-  // Agreeableness
+  // Agreeableness: compassion, cooperativeness, and trust in others
   if (traits.agreeableness <= 30) {
     descriptions.agreeableness = `Low Agreeableness: Direct, sometimes critical, and values honesty over harmony. Speech can be blunt, argumentative, or skeptical.`;
   } else if (traits.agreeableness <= 70) {
@@ -43,7 +52,7 @@ export function generateTraitDescriptions(traits: CharacterTraits): Record<strin
     descriptions.agreeableness = `High Agreeableness: Compassionate, trusting, and eager to help others. Speech is warm, supportive, and avoids conflict.`;
   }
 
-  // Emotional Stability
+  // Emotional Stability: calmness and resilience to stress (opposite of neuroticism)
   if (traits.emotional_stability <= 30) {
     descriptions.emotional_stability = `Low Emotional Stability: Prone to stress, anxiety, and mood swings. Speech may reveal worries, self-doubt, or emotional reactivity.`;
   } else if (traits.emotional_stability <= 70) {
@@ -58,11 +67,13 @@ export function generateTraitDescriptions(traits: CharacterTraits): Record<strin
 /**
  * Predicts behavior patterns based on combinations of Big Five traits.
  * Returns an array of unique behavioral tendencies.
+ * @param traits - The Big Five trait values for a character.
+ * @returns An array of behavior pattern descriptions.
  */
 export function predictBehaviorPatterns(traits: CharacterTraits): string[] {
   const patterns: string[] = [];
 
-  // Example combinations
+  // Example combinations for more nuanced behaviors
   if (traits.openness > 70 && traits.extraversion > 70) {
     patterns.push('Seeks out novel social experiences and enjoys creative group activities.');
   }
@@ -81,7 +92,7 @@ export function predictBehaviorPatterns(traits: CharacterTraits): string[] {
   if (traits.conscientiousness > 70 && traits.emotional_stability < 30) {
     patterns.push('Driven to achieve but may become anxious or perfectionistic under pressure.');
   }
-  // General patterns
+  // If no specific pattern matches, return a general pattern
   if (patterns.length === 0) {
     patterns.push('Displays a balanced and adaptable set of behaviors, adjusting to different situations as needed.');
   }
@@ -92,10 +103,14 @@ export function predictBehaviorPatterns(traits: CharacterTraits): string[] {
 /**
  * Identifies potential sources of conflict between two characters based on their traits.
  * Returns an array of conflict descriptions.
+ * @param a - The first character's traits.
+ * @param b - The second character's traits.
+ * @returns An array of conflict source descriptions.
  */
 export function predictConflictSources(a: CharacterTraits, b: CharacterTraits): string[] {
   const conflicts: string[] = [];
 
+  // Large differences in each trait can lead to conflict
   // Openness
   if (Math.abs(a.openness - b.openness) > 40) {
     conflicts.push('Differences in openness may lead to disagreements about trying new things versus sticking to tradition.');
@@ -117,6 +132,7 @@ export function predictConflictSources(a: CharacterTraits, b: CharacterTraits): 
     conflicts.push('One character may be seen as too sensitive or too stoic, leading to misunderstandings in emotional situations.');
   }
 
+  // If no major differences, personalities are likely compatible
   if (conflicts.length === 0) {
     conflicts.push('No major sources of conflict predicted; personalities are likely to be compatible.');
   }

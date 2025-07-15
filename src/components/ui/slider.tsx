@@ -1,5 +1,21 @@
+/**
+ * Slider Component
+ * ---------------
+ * A beautiful, modern slider for adjusting numerical values (e.g., personality traits).
+ * Used in character creation and trait editing UIs. Supports custom labels, min/max, and styling.
+ */
 import React from 'react';
 
+/**
+ * Props for the Slider component.
+ * @property value - The current value of the slider.
+ * @property onValueChange - Callback when the value changes.
+ * @property min - Minimum value (default 0).
+ * @property max - Maximum value (default 100).
+ * @property step - Step size (default 1).
+ * @property label - Optional label to display above the slider.
+ * @property className - Optional additional CSS classes.
+ */
 interface SliderProps {
   value: number;
   onValueChange: (value: number) => void;
@@ -11,7 +27,14 @@ interface SliderProps {
 }
 
 /**
- * A beautiful, modern slider component for professional character creation tools.
+ * Slider renders a styled range input for selecting a value.
+ * @param value - The current value.
+ * @param onValueChange - Callback when the value changes.
+ * @param min - Minimum value.
+ * @param max - Maximum value.
+ * @param step - Step size.
+ * @param label - Optional label.
+ * @param className - Optional CSS classes.
  */
 export const Slider: React.FC<SliderProps> = ({
   value,
@@ -40,7 +63,7 @@ export const Slider: React.FC<SliderProps> = ({
         className="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
         style={{ accentColor: '#3b82f6' }}
       />
-      {/* Custom track and thumb styling */}
+      {/* Custom track and thumb styling for a modern look */}
       <style jsx>{`
         input[type='range']::-webkit-slider-thumb {
           appearance: none;

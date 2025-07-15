@@ -1,0 +1,265 @@
+FULL PRD: Multi-Personality System Integration
+Project Overview
+Integrate 4 additional scientific personality systems (MBTI, HEXACO, Dark Triad, TCI) into the existing Character Engine, creating the most comprehensive character creation platform in the market.
+Business Objectives
+• Market Differentiation: Become the only platform offering 5+ personality systems
+• User Retention: Increase engagement through multiple personality perspectives
+• Revenue Growth: Premium features justify higher pricing tiers
+• Patent Strengthening: Expand IP portfolio with multi-system approach
+Technical Scope
+Phase 1: MBTI Integration (Week 1-2)
+Epic 1.1: MBTI Conversion System
+• Research-based Big Five to MBTI mapping algorithm
+• Bidirectional conversion (MBTI → Big Five)
+• Confidence scoring for conversions
+• Acceptance Criteria: 85%+ accuracy vs. validated MBTI assessments
+Epic 1.2: MBTI Standalone Interface
+• MBTI type selector (16 types with descriptions)
+• Interactive type explorer with trait explanations
+• Visual type comparison tool
+• Acceptance Criteria: Users can create characters using pure MBTI input
+Epic 1.3: Dual-System Display
+• Side-by-side personality system comparison
+• Cross-system validation indicators
+• Consistency scoring between systems
+• Acceptance Criteria: Both systems displayed simultaneously with coherence metrics
+Phase 2: HEXACO Integration (Week 3-4)
+Epic 2.1: HEXACO Calculation Engine
+• Honesty-Humility factor calculation from Big Five
+• Six-factor HEXACO profile generation
+• Research-based correlation mapping
+• Acceptance Criteria: HEXACO profiles match psychological research patterns
+Epic 2.2: Villain Creation Enhancement
+• Dark character detection via low Honesty-Humility
+• Antagonist archetype suggestions
+• Manipulation/exploitation behavior predictions
+• Acceptance Criteria: Enhanced villain authenticity in user testing
+Epic 2.3: Cross-Cultural Personality Validation
+• Multi-language personality consistency
+• Cultural adaptation algorithms
+• International character archetype library
+• Acceptance Criteria: System works across 3+ cultural contexts
+Phase 3: Dark Triad Integration (Week 5-6)
+Epic 3.1: Dark Triad Calculation
+• Machiavellianism, Narcissism, Psychopathy scoring
+• Inverse correlation with HEXACO Honesty-Humility
+• Dark personality trait breakdown
+• Acceptance Criteria: Dark Triad scores correlate with research expectations
+Epic 3.2: Complex Character Creation
+• Morally ambiguous character generation
+• Anti-hero personality profiles
+• Psychological complexity indicators
+• Acceptance Criteria: Characters show authentic psychological depth
+Epic 3.3: Content Warning System
+• Dark personality trait warnings
+• Age-appropriate content filtering
+• Ethical use guidelines
+• Acceptance Criteria: Responsible AI character creation safeguards
+Phase 4: TCI Integration (Week 7-8)
+Epic 4.1: Temperament vs Character System
+• Four temperament dimensions (Novelty Seeking, Harm Avoidance, etc.)
+• Three character dimensions (Self-Directedness, Cooperativeness, etc.)
+• Biological vs learned behavior distinction
+• Acceptance Criteria: TCI profiles demonstrate temperament/character split
+Epic 4.2: Advanced Character Development
+• Character growth simulation over time
+• Learned behavior adaptation
+• Personality maturation modeling
+• Acceptance Criteria: Characters show realistic psychological development
+Epic 4.3: Therapeutic/Educational Applications
+• Character therapy simulation
+• Educational psychology demonstrations
+• Personal growth character arcs
+• Acceptance Criteria: System suitable for educational/therapeutic contexts
+Technical Architecture
+Core System Enhancement
+javascript
+// Enhanced Character Engine Architecture
+const PersonalityEngine = {
+  bigFive: { /* existing system */ },
+  
+  mbti: {
+    converter: new MBTIConverter(),
+    typeSelector: new TypeSelector(),
+    validator: new CrossSystemValidator()
+  },
+  
+  hexaco: {
+    calculator: new HEXACOCalculator(),
+    honestyHumility: new HonestyHumilityProcessor(),
+    culturalAdapter: new CulturalAdapter()
+  },
+  
+  darkTriad: {
+    calculator: new DarkTriadCalculator(),
+    contentWarning: new ContentWarningSystem(),
+    ethicalGuards: new EthicalGuardSystem()
+  },
+  
+  tci: {
+    temperamentEngine: new TemperamentEngine(),
+    characterEngine: new CharacterEngine(),
+    developmentSimulator: new DevelopmentSimulator()
+  }
+};
+Database Schema Updates
+sql
+-- Enhanced Character Profile Table
+ALTER TABLE character_profiles ADD COLUMN mbti_type VARCHAR(4);
+ALTER TABLE character_profiles ADD COLUMN hexaco_profile JSONB;
+ALTER TABLE character_profiles ADD COLUMN dark_triad_scores JSONB;
+ALTER TABLE character_profiles ADD COLUMN tci_temperament JSONB;
+ALTER TABLE character_profiles ADD COLUMN tci_character JSONB;
+ALTER TABLE character_profiles ADD COLUMN system_consistency_score FLOAT;
+API Enhancements
+javascript
+// New API Endpoints
+POST /api/personality/convert
+POST /api/personality/validate
+POST /api/personality/compare
+GET /api/personality/systems
+POST /api/character/multi-system
+UI/UX Specifications
+Enhanced Character Creation Interface
+• System Selection Tabs: Big Five | MBTI | HEXACO | Dark Triad | TCI
+• Multi-System View: Side-by-side comparison mode
+• Consistency Indicators: Visual coherence scoring
+• Export Options: All systems included in character exports
+Character Preview Enhancements
+jsx
+<CharacterPreview>
+  <SystemTabs>
+    <Tab system="bigfive" active />
+    <Tab system="mbti" />
+    <Tab system="hexaco" />
+    <Tab system="darktriad" />
+    <Tab system="tci" />
+  </SystemTabs>
+  
+  <ConsistencyScore score={92} />
+  
+  <PersonalityProfiles>
+    <ProfileCard system="bigfive" />
+    <ProfileCard system="mbti" />
+    {/* ... other systems */}
+  </PersonalityProfiles>
+</CharacterPreview>
+Research & Development Requirements
+Psychology Research Integration
+• Literature Review: 50+ peer-reviewed papers on personality correlations
+• Validation Studies: Cross-system consistency research
+• Cultural Studies: International personality variations
+• Ethical Guidelines: Responsible AI personality creation
+Algorithm Development
+• Correlation Matrices: Research-based conversion algorithms
+• Confidence Scoring: Statistical reliability measures
+• Validation Testing: Cross-platform consistency testing
+• Performance Optimization: Multi-system calculation efficiency
+Quality Assurance
+Testing Strategy
+• Unit Tests: Each personality system component
+• Integration Tests: Cross-system interactions
+• User Acceptance Tests: Character authenticity validation
+• Performance Tests: Multi-system calculation speed
+• Security Tests: Ethical use compliance
+Validation Metrics
+• Accuracy: 85%+ correlation with validated assessments
+• Consistency: 90%+ cross-system coherence
+• Performance: <2s multi-system calculation
+• User Satisfaction: 4.5/5 authenticity rating
+Risk Management
+Technical Risks
+• System Complexity: Mitigate with modular architecture
+• Performance Impact: Optimize with caching and async processing
+• Data Consistency: Implement robust validation systems
+Ethical Considerations
+• Dark Personality Misuse: Content warnings and usage guidelines
+• Psychological Accuracy: Professional psychology review
+• User Privacy: Secure personality data handling
+Success Criteria
+Phase 1 (MBTI) Success Metrics
+• MBTI conversion accuracy >85%
+• User engagement increase >25%
+• Character authenticity rating >4.3/5
+• System performance maintained <2s response time
+Phase 2 (HEXACO) Success Metrics
+• Villain character quality improvement >30%
+• Cross-cultural validation successful
+• User retention increase >20%
+Phase 3 (Dark Triad) Success Metrics
+• Complex character creation capability
+• Ethical safeguards implemented
+• Content warning system operational
+Phase 4 (TCI) Success Metrics
+• Character development simulation functional
+• Educational application readiness
+• Complete multi-system integration
+Deliverables
+Technical Deliverables
+• Enhanced character creation engine with 5 personality systems
+• Research-based conversion algorithms
+• Comprehensive testing suite
+• Updated API documentation
+• Multi-system export capabilities
+Business Deliverables
+• Market differentiation achieved
+• Premium feature justification
+• Patent portfolio expansion
+• User engagement increase
+• Revenue growth foundation
+Timeline & Dependencies
+Critical Path
+1. Week 1-2: MBTI integration (foundation for other systems)
+2. Week 3-4: HEXACO implementation (builds on MBTI)
+3. Week 5-6: Dark Triad integration (uses HEXACO)
+4. Week 7-8: TCI system (most complex integration)
+Dependencies
+• Psychology research completion before algorithm development
+• MBTI system as foundation for other integrations
+• Testing infrastructure ready for multi-system validation
+• UI/UX framework capable of handling multiple systems
+Budget & Resources
+Development Resources
+• Solo Developer: You (using Cursor + Task Master AI)
+• AI Assistance: Claude API for complex algorithm development
+• Research: Academic database access for psychology papers
+• Testing: Beta user group for validation
+Estimated Timeline
+• Total Duration: 8 weeks
+• Effort: ~160 hours (20 hours/week)
+• Complexity: High (multi-system integration)
+• Risk: Medium (well-researched approach)
+________________________________________
+Task Master AI Implementation Instructions
+Setup Commands
+bash
+# Install Task Master AI
+npm install -g task-master-ai
+
+# Initialize in your project
+task-master init --rules cursor
+
+# Set up MCP integration in Cursor
+# (Add API keys to MCP configuration)
+PRD Usage
+bash
+# Save this PRD as .taskmaster/docs/prd.txt
+# Then in Cursor, ask:
+"Please use task-master parse-prd to generate tasks from my PRD"
+
+# Or use CLI:
+task-master parse-prd .taskmaster/docs/prd.txt
+Task Management
+bash
+# View all tasks
+task-master list
+
+# Get next task
+task-master next
+
+# Research support
+task-master research "MBTI Big Five correlation studies"
+
+# Update task status
+task-master update 1 --status completed
+This PRD gives Task Master AI everything it needs to break down your multi-personality integration into manageable, sequential tasks. The system will handle dependencies, research requirements, and progress tracking automatically! 
